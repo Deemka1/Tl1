@@ -3,67 +3,358 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Запись на консультацию</title>
+    <title>Елена Шумаенко - Антикризисный психолог</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg-color: var(--tg-theme-bg-color, #ffffff);
-            --text-color: var(--tg-theme-text-color, #000000);
-            --hint-color: var(--tg-theme-hint-color, #999999);
-            --button-color: var(--tg-theme-button-color, #3390ec);
-            --button-text-color: var(--tg-theme-button-text-color, #ffffff);
-            --secondary-bg: var(--tg-theme-secondary-bg-color, #f0f0f0);
+            --tg-bg: var(--tg-theme-bg-color, #ffffff);
+            --tg-text: var(--tg-theme-text-color, #000000);
+            --tg-hint: var(--tg-theme-hint-color, #999999);
+            --tg-button: var(--tg-theme-button-color, #3390ec);
+            --tg-button-text: var(--tg-theme-button-text-color, #ffffff);
+            --tg-secondary: var(--tg-theme-secondary-bg-color, #f0f2f5);
         }
 
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            line-height: 1.5;
+            background-color: var(--tg-bg);
+            color: var(--tg-text);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        h1 {
-            font-size: 24px;
-            margin: 0 0 20px 0;
+        /* Шапка */
+        .header {
             text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            border: 3px solid rgba(255,255,255,0.5);
+        }
+
+        .name {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .title {
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .description {
+            margin-top: 15px;
+            font-size: 15px;
+            line-height: 1.5;
+            opacity: 0.95;
+        }
+
+        /* Навигация */
+        .nav {
+            display: flex;
+            gap: 10px;
+            padding: 15px 20px;
+            background: var(--tg-secondary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 12px;
+            background: var(--tg-button);
+            color: var(--tg-button-text);
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .nav-btn:active {
+            opacity: 0.8;
+        }
+
+        /* Контент */
+        .content {
+            padding: 20px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--tg-button);
+            display: inline-block;
+        }
+
+        /* Контакты */
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: var(--tg-secondary);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: var(--tg-text);
+            transition: transform 0.2s;
+        }
+
+        .contact-item:active {
+            transform: scale(0.98);
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--tg-button);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 20px;
+        }
+
+        .contact-text {
+            flex: 1;
+        }
+
+        .contact-label {
+            font-size: 12px;
+            color: var(--tg-hint);
+        }
+
+        .contact-value {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        /* Проблемы */
+        .problem-card {
+            background: var(--tg-secondary);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .problem-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--tg-button);
+        }
+
+        .problem-list {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Услуги */
+        .service-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .service-info {
+            flex: 1;
+        }
+
+        .service-name {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .service-desc {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .service-price {
+            font-size: 20px;
+            font-weight: 700;
+            white-space: nowrap;
+            margin-left: 12px;
+        }
+
+        /* FAQ */
+        .faq-item {
+            background: var(--tg-secondary);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            padding: 0 15px 15px;
+            font-size: 14px;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Адрес */
+        .address-box {
+            background: var(--tg-secondary);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .address-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .address-text {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .legal-info {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--tg-hint);
+            font-size: 12px;
+            color: var(--tg-hint);
+        }
+
+        /* Соцсети */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .social-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            background: var(--tg-secondary);
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--tg-text);
+            transition: transform 0.2s;
+        }
+
+        .social-link:active {
+            transform: scale(0.95);
+        }
+
+        .social-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .social-name {
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* Форма записи */
+        .booking-page {
+            display: none;
+        }
+
+        .booking-page.active {
+            display: block;
+        }
+
+        .main-page.hidden {
+            display: none;
         }
 
         .form-group {
             margin-bottom: 20px;
         }
 
-        label {
+        .form-label {
             display: block;
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 15px;
         }
 
-        select, input {
+        .form-select,
+        .form-input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid var(--hint-color);
-            border-radius: 8px;
-            background-color: var(--secondary-bg);
-            color: var(--text-color);
+            padding: 14px;
+            border: 2px solid var(--tg-secondary);
+            border-radius: 10px;
+            background: var(--tg-bg);
+            color: var(--tg-text);
             font-size: 16px;
             font-family: inherit;
         }
 
-        select:focus, input:focus {
+        .form-select:focus,
+        .form-input:focus {
             outline: none;
-            border-color: var(--button-color);
+            border-color: var(--tg-button);
         }
 
         /* Календарь */
         .calendar {
-            background-color: var(--secondary-bg);
+            background: var(--tg-secondary);
             border-radius: 12px;
             padding: 16px;
             margin-bottom: 20px;
@@ -73,20 +364,25 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
-        .calendar-header button {
-            background: none;
+        .calendar-nav {
+            background: var(--tg-button);
+            color: var(--tg-button-text);
             border: none;
-            font-size: 20px;
-            color: var(--button-color);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 18px;
             cursor: pointer;
-            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .calendar-month {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 16px;
         }
 
@@ -99,32 +395,34 @@
         .calendar-day-header {
             text-align: center;
             font-size: 12px;
-            color: var(--hint-color);
-            padding: 4px;
+            color: var(--tg-hint);
+            padding: 8px 4px;
+            font-weight: 600;
         }
 
         .calendar-day {
             text-align: center;
-            padding: 8px 4px;
-            border-radius: 6px;
+            padding: 10px 4px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
-            transition: background-color 0.2s;
+            font-weight: 500;
+            transition: all 0.2s;
         }
 
         .calendar-day:hover:not(.disabled):not(.empty) {
-            background-color: var(--button-color);
-            color: var(--button-text-color);
+            background: var(--tg-button);
+            color: var(--tg-button-text);
         }
 
         .calendar-day.selected {
-            background-color: var(--button-color);
-            color: var(--button-text-color);
-            font-weight: 600;
+            background: var(--tg-button);
+            color: var(--tg-button-text);
+            font-weight: 700;
         }
 
         .calendar-day.disabled {
-            color: var(--hint-color);
+            color: var(--tg-hint);
             opacity: 0.3;
             cursor: not-allowed;
         }
@@ -133,33 +431,39 @@
             cursor: default;
         }
 
-        /* Слоты времени */
+        /* Время */
+        .time-label {
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
         .time-slots {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 20px;
+            gap: 10px;
         }
 
         .time-slot {
-            padding: 12px;
-            background-color: var(--secondary-bg);
+            padding: 14px;
+            background: var(--tg-secondary);
             border: 2px solid transparent;
-            border-radius: 8px;
+            border-radius: 10px;
             text-align: center;
             cursor: pointer;
             font-size: 14px;
+            font-weight: 500;
             transition: all 0.2s;
         }
 
-        .time-slot:hover {
-            border-color: var(--button-color);
+        .time-slot:hover:not(.disabled) {
+            border-color: var(--tg-button);
         }
 
         .time-slot.selected {
-            background-color: var(--button-color);
-            color: var(--button-text-color);
-            border-color: var(--button-color);
+            background: var(--tg-button);
+            color: var(--tg-button-text);
+            border-color: var(--tg-button);
         }
 
         .time-slot.disabled {
@@ -167,15 +471,16 @@
             cursor: not-allowed;
         }
 
+        /* Кнопка */
         .submit-btn {
             width: 100%;
             padding: 16px;
-            background-color: var(--button-color);
-            color: var(--button-text-color);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             border: none;
             border-radius: 12px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             transition: opacity 0.2s;
         }
@@ -186,83 +491,330 @@
         }
 
         .submit-btn:active:not(:disabled) {
-            opacity: 0.8;
+            opacity: 0.9;
+        }
+
+        /* Футер */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--tg-hint);
+            font-size: 12px;
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section {
+            animation: fadeIn 0.3s ease-out;
         }
     </style>
 </head>
 <body>
-    <h1>📅 Запись на консультацию</h1>
+    <!-- Шапка -->
+    <div class="header">
+        <div class="avatar">‍⚕️</div>
+        <h1 class="name">Елена Шумаенко</h1>
+        <div class="title">Антикризисный психолог</div>
+        <p class="description">
+            Психологическая помощь взрослым и подросткам. Больше 1000 часов практики по уникальной авторской методике.
+        </p>
+    </div>
 
-    <form id="bookingForm">
-        <!-- Выбор услуги -->
-        <div class="form-group">
-            <label for="service">Выберите услугу</label>
-            <select id="service" required>
-                <option value="">-- Выберите услугу --</option>
-                <option value="consultation">Личная консультация (60 мин) - 3 500 ₽</option>
-                <option value="family">Семейная консультация (90 мин) - 6 000 ₽</option>
-                <option value="teen">Консультация для подростка (60 мин) - 3 500 ₽</option>
-            </select>
-        </div>
+    <!-- Навигация -->
+    <div class="nav">
+        <button class="nav-btn" onclick="showPage('main')">📋 Услуги</button>
+        <button class="nav-btn" onclick="showPage('booking')">📅 Записаться</button>
+    </div>
 
-        <!-- Календарь -->
-        <div class="form-group">
-            <label>Выберите дату</label>
-            <div class="calendar">
-                <div class="calendar-header">
-                    <button type="button" id="prevMonth">‹</button>
-                    <div class="calendar-month" id="calendarMonth"></div>
-                    <button type="button" id="nextMonth">›</button>
+    <!-- Главная страница -->
+    <div class="main-page" id="mainPage">
+        <div class="content">
+            <!-- Контакты -->
+            <div class="section">
+                <h2 class="section-title">Контакты</h2>
+                
+                <a href="tel:+79283403338" class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div class="contact-text">
+                        <div class="contact-label">Телефон</div>
+                        <div class="contact-value">+7 928 340 33 38</div>
+                    </div>
+                </a>
+
+                <a href="https://t.me/elenashumaenko" class="contact-item">
+                    <div class="contact-icon">️</div>
+                    <div class="contact-text">
+                        <div class="contact-label">Telegram</div>
+                        <div class="contact-value">@elenashumaenko</div>
+                    </div>
+                </a>
+
+                <a href="mailto:hellena26@mail.ru" class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <div class="contact-text">
+                        <div class="contact-label">Email</div>
+                        <div class="contact-value">hellena26@mail.ru</div>
+                    </div>
+                </a>
+
+                <a href="https://instagram.com/e.shumaenko_psy" class="contact-item">
+                    <div class="contact-icon">📷</div>
+                    <div class="contact-text">
+                        <div class="contact-label">Instagram</div>
+                        <div class="contact-value">@e.shumaenko_psy</div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Проблемы -->
+            <div class="section">
+                <h2 class="section-title">Проблемы, с которыми я работаю</h2>
+                
+                <div class="problem-card">
+                    <div class="problem-title">🧠 Психологические нарушения</div>
+                    <div class="problem-list">
+                        Депрессия, тревога, страхи, навязчивые мысли, раздражительность, неуверенность в себе
+                    </div>
                 </div>
-                <div class="calendar-grid" id="calendarGrid"></div>
+
+                <div class="problem-card">
+                    <div class="problem-title">🌊 Жизненные кризисы</div>
+                    <div class="problem-list">
+                        Расставание, измена, утрата близкого человека, неудовлетворенность качеством жизни
+                    </div>
+                </div>
             </div>
-            <input type="hidden" id="selectedDate" required>
-        </div>
 
-        <!-- Выбор времени -->
-        <div class="form-group">
-            <label>Выберите время</label>
-            <div class="time-slots" id="timeSlots">
-                <div class="time-slot" data-time="10:00">10:00</div>
-                <div class="time-slot" data-time="11:00">11:00</div>
-                <div class="time-slot" data-time="12:00">12:00</div>
-                <div class="time-slot" data-time="14:00">14:00</div>
-                <div class="time-slot" data-time="15:00">15:00</div>
-                <div class="time-slot" data-time="16:00">16:00</div>
-                <div class="time-slot" data-time="17:00">17:00</div>
-                <div class="time-slot" data-time="18:00">18:00</div>
-                <div class="time-slot" data-time="19:00">19:00</div>
+            <!-- Услуги -->
+            <div class="section">
+                <h2 class="section-title">Услуги и цены</h2>
+                
+                <div class="service-card">
+                    <div class="service-info">
+                        <div class="service-name">Консультация 60 мин.</div>
+                        <div class="service-desc">Индивидуальная встреча</div>
+                    </div>
+                    <div class="service-price">3 500 ₽</div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-info">
+                        <div class="service-name">Семейная консультация 90 мин.</div>
+                        <div class="service-desc">Для пар и семей</div>
+                    </div>
+                    <div class="service-price">6 000 ₽</div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-info">
+                        <div class="service-name">Воркбук «Первый шаг к себе»</div>
+                        <div class="service-desc">На 2 недели</div>
+                    </div>
+                    <div class="service-price">490 ₽</div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-info">
+                        <div class="service-name">Воркбук инд. на 4 недели</div>
+                        <div class="service-desc">+ консультация-диагностика</div>
+                    </div>
+                    <div class="service-price">4 000 ₽</div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-info">
+                        <div class="service-name">Абонемент 5 консультаций</div>
+                        <div class="service-desc">Личных встреч</div>
+                    </div>
+                    <div class="service-price">15 000 ₽</div>
+                </div>
             </div>
-            <input type="hidden" id="selectedTime" required>
+
+            <!-- FAQ -->
+            <div class="section">
+                <h2 class="section-title">Частые вопросы</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>В чем заключается смысл оказания психологической помощи?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Психологическая помощь направлена на прояснение и устранение психологических проблем и патологических симптомов, развитие навыков самопознания и умения управлять своим состоянием.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Какие методы вы применяете в своей работе?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        В первую очередь я применяю авторскую методику, основанную на когнитивно-поведенческой и телесно-ориентированной терапии. Дополнительно использую метод ДПДГ (EMDR).
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>А вдруг вы вложите мне в голову что-то против моей воли?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Не переживайте! Цели ставит клиент, все решения принимает он же, находясь в ясном сознании и выбирая в процессе работы то, что ему подходит и с чем он согласен.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Адрес -->
+            <div class="section">
+                <h2 class="section-title">Адрес приема</h2>
+                
+                <div class="address-box">
+                    <div class="address-label">📍 Очный прием</div>
+                    <div class="address-text">
+                        г. Пятигорск, ул. Панагюриште 2, кабинет 313
+                    </div>
+                    <div class="legal-info">
+                        Самозанятый Шумаенко Елена Александровна<br>
+                        ИНН 260402618200
+                    </div>
+                </div>
+            </div>
+
+            <!-- Соцсети -->
+            <div class="section">
+                <h2 class="section-title">Подпишитесь на меня</h2>
+                
+                <div class="social-grid">
+                    <a href="https://instagram.com/e.shumaenko_psy" class="social-link">
+                        <div class="social-icon">📷</div>
+                        <div class="social-name">Instagram</div>
+                    </a>
+                    <a href="#" class="social-link">
+                        <div class="social-icon"></div>
+                        <div class="social-name">ВКонтакте</div>
+                    </a>
+                    <a href="https://t.me/elenashumaenko" class="social-link">
+                        <div class="social-icon">✈️</div>
+                        <div class="social-name">Telegram</div>
+                    </a>
+                </div>
+            </div>
         </div>
 
-        <!-- Контактные данные -->
-        <div class="form-group">
-            <label for="name">Ваше имя</label>
-            <input type="text" id="name" placeholder="Как к вам обращаться?" required>
+        <div class="footer">
+            © 2026 Елена Шумаенко<br>
+            Антикризисный психолог
         </div>
+    </div>
 
-        <div class="form-group">
-            <label for="phone">Телефон</label>
-            <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" required>
+    <!-- Страница записи -->
+    <div class="booking-page" id="bookingPage">
+        <div class="content">
+            <h2 class="section-title">Запись на консультацию</h2>
+            
+            <form id="bookingForm">
+                <!-- Услуга -->
+                <div class="form-group">
+                    <label class="form-label">Выберите услугу</label>
+                    <select class="form-select" id="service" required>
+                        <option value="">-- Выберите услугу --</option>
+                        <option value="consultation">Консультация 60 мин. - 3 500 ₽</option>
+                        <option value="family">Семейная консультация 90 мин. - 6 000 ₽</option>
+                        <option value="workbook">Воркбук «Первый шаг к себе» - 490 ₽</option>
+                        <option value="workbook_individual">Воркбук инд. на 4 недели - 4 000 ₽</option>
+                        <option value="subscription">Абонемент 5 консультаций - 15 000 ₽</option>
+                    </select>
+                </div>
+
+                <!-- Календарь -->
+                <div class="form-group">
+                    <label class="form-label">Выберите дату</label>
+                    <div class="calendar">
+                        <div class="calendar-header">
+                            <button type="button" class="calendar-nav" id="prevMonth">‹</button>
+                            <div class="calendar-month" id="calendarMonth"></div>
+                            <button type="button" class="calendar-nav" id="nextMonth">›</button>
+                        </div>
+                        <div class="calendar-grid" id="calendarGrid"></div>
+                    </div>
+                    <input type="hidden" id="selectedDate" required>
+                </div>
+
+                <!-- Время -->
+                <div class="form-group">
+                    <label class="time-label">Выберите время</label>
+                    <div class="time-slots" id="timeSlots">
+                        <div class="time-slot" data-time="10:00">10:00</div>
+                        <div class="time-slot" data-time="11:00">11:00</div>
+                        <div class="time-slot" data-time="12:00">12:00</div>
+                        <div class="time-slot" data-time="14:00">14:00</div>
+                        <div class="time-slot" data-time="15:00">15:00</div>
+                        <div class="time-slot" data-time="16:00">16:00</div>
+                        <div class="time-slot" data-time="17:00">17:00</div>
+                        <div class="time-slot" data-time="18:00">18:00</div>
+                        <div class="time-slot" data-time="19:00">19:00</div>
+                        <div class="time-slot" data-time="20:00">20:00</div>
+                    </div>
+                    <input type="hidden" id="selectedTime" required>
+                </div>
+
+                <!-- Имя -->
+                <div class="form-group">
+                    <label class="form-label">Ваше имя</label>
+                    <input type="text" class="form-input" id="clientName" placeholder="Как к вам обращаться?" required>
+                </div>
+
+                <!-- Телефон -->
+                <div class="form-group">
+                    <label class="form-label">Телефон</label>
+                    <input type="tel" class="form-input" id="clientPhone" placeholder="+7 (___) ___-__-__" required>
+                </div>
+
+                <!-- Комментарий -->
+                <div class="form-group">
+                    <label class="form-label">Комментарий (необязательно)</label>
+                    <input type="text" class="form-input" id="clientComment" placeholder="Кратко о вашей проблеме">
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Записаться</button>
+            </form>
         </div>
-
-        <button type="submit" class="submit-btn" id="submitBtn">Записаться</button>
-    </form>
+    </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
 
-        // Данные формы
-        const formData = {
-            service: '',
-            date: '',
-            time: '',
-            name: '',
-            phone: ''
-        };
+        // Навигация между страницами
+        function showPage(page) {
+            const mainPage = document.getElementById('mainPage');
+            const bookingPage = document.getElementById('bookingPage');
+            
+            if (page === 'booking') {
+                mainPage.classList.add('hidden');
+                bookingPage.classList.add('active');
+                tg.setHeaderColor('#667eea');
+            } else {
+                mainPage.classList.remove('hidden');
+                bookingPage.classList.remove('active');
+                tg.setHeaderColor('#ffffff');
+            }
+            
+            tg.HapticFeedback.impactOccurred('light');
+        }
+
+        // FAQ аккордеон
+        function toggleFaq(element) {
+            const item = element.parentElement;
+            item.classList.toggle('active');
+            tg.HapticFeedback.selectionChanged();
+        }
 
         // Календарь
         const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 
@@ -272,6 +824,14 @@
         let currentDate = new Date();
         let currentMonth = currentDate.getMonth();
         let currentYear = currentDate.getFullYear();
+        const formData = {
+            service: '',
+            date: '',
+            time: '',
+            name: '',
+            phone: '',
+            comment: ''
+        };
 
         function renderCalendar() {
             const grid = document.getElementById('calendarGrid');
@@ -280,7 +840,6 @@
             monthLabel.textContent = `${months[currentMonth]} ${currentYear}`;
             grid.innerHTML = '';
 
-            // Заголовки дней недели
             weekDays.forEach(day => {
                 const header = document.createElement('div');
                 header.className = 'calendar-day-header';
@@ -288,19 +847,16 @@
                 grid.appendChild(header);
             });
 
-            // Первый день месяца
             const firstDay = new Date(currentYear, currentMonth, 1);
             const lastDay = new Date(currentYear, currentMonth + 1, 0);
             
-            // Пустые ячейки до первого дня
-            const startOffset = (firstDay.getDay() + 6) % 7; // Понедельник = 0
+            const startOffset = (firstDay.getDay() + 6) % 7;
             for (let i = 0; i < startOffset; i++) {
                 const empty = document.createElement('div');
                 empty.className = 'calendar-day empty';
                 grid.appendChild(empty);
             }
 
-            // Дни месяца
             const today = new Date();
             today.setHours(0, 0, 0, 0);
 
@@ -311,7 +867,6 @@
 
                 const date = new Date(currentYear, currentMonth, day);
                 
-                // Отключаем прошедшие дни
                 if (date < today) {
                     dayElement.classList.add('disabled');
                 } else {
@@ -339,6 +894,7 @@
                 currentYear--;
             }
             renderCalendar();
+            tg.HapticFeedback.impactOccurred('light');
         });
 
         document.getElementById('nextMonth').addEventListener('click', () => {
@@ -348,6 +904,7 @@
                 currentYear++;
             }
             renderCalendar();
+            tg.HapticFeedback.impactOccurred('light');
         });
 
         // Выбор времени
@@ -366,25 +923,27 @@
             });
         });
 
-        // Выбор услуги
+        // Поля формы
         document.getElementById('service').addEventListener('change', function() {
             formData.service = this.value;
-            tg.HapticFeedback.selectionChanged();
             validateForm();
         });
 
-        // Имя и телефон
-        document.getElementById('name').addEventListener('input', function() {
+        document.getElementById('clientName').addEventListener('input', function() {
             formData.name = this.value;
             validateForm();
         });
 
-        document.getElementById('phone').addEventListener('input', function() {
+        document.getElementById('clientPhone').addEventListener('input', function() {
             formData.phone = this.value;
             validateForm();
         });
 
-        // Валидация формы
+        document.getElementById('clientComment').addEventListener('input', function() {
+            formData.comment = this.value;
+        });
+
+        // Валидация
         function validateForm() {
             const submitBtn = document.getElementById('submitBtn');
             const isValid = formData.service && formData.date && formData.time && formData.name && formData.phone;
@@ -397,24 +956,49 @@
             
             tg.HapticFeedback.notificationOccurred('success');
             
-            // Отправляем данные боту
-            tg.sendData(JSON.stringify({
+            const data = {
                 action: 'booking',
                 service: formData.service,
                 date: formData.date,
                 time: formData.time,
                 name: formData.name,
-                phone: formData.phone
-            }));
+                phone: formData.phone,
+                comment: formData.comment
+            };
+            
+            tg.sendData(JSON.stringify(data));
 
-            // Показываем подтверждение
             tg.showPopup({
                 title: '✅ Заявка отправлена',
-                message: `Вы записаны на ${formData.date} в ${formData.time}.\n\nБот скоро свяжется с вами для подтверждения.`,
+                message: `${formData.name}, вы записаны на ${formData.date} в ${formData.time}.\n\nБот скоро свяжется с вами для подтверждения.`,
                 buttons: [{type: 'ok', text: 'Отлично!'}]
             }, () => {
                 tg.close();
             });
+        });
+
+        // Маска для телефона
+        document.getElementById('clientPhone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                if (value[0] === '7' || value[0] === '8') {
+                    value = value.substring(1);
+                }
+                let formattedValue = '+7';
+                if (value.length > 0) {
+                    formattedValue += ' (' + value.substring(0, 3);
+                }
+                if (value.length >= 3) {
+                    formattedValue += ') ' + value.substring(3, 6);
+                }
+                if (value.length >= 6) {
+                    formattedValue += '-' + value.substring(6, 8);
+                }
+                if (value.length >= 8) {
+                    formattedValue += '-' + value.substring(8, 10);
+                }
+                e.target.value = formattedValue;
+            }
         });
 
         // Инициализация
